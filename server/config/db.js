@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
 import "colors";
+import dotenv from "dotenv";
+dotenv.config();
+const mongodb_uri = process.env.MONGODB_URI;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(mongodb_uri);
 
 const db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "connection error"));
+//mengangani error
+db.on("error", console.error.bind(console, "connection error".bgRed.white));
+
+//menangangi berhasil
 db.once("open", function () {
   console.log("connected to mongodb database".bgCyan.white);
 });

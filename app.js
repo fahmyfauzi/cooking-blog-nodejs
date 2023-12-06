@@ -1,5 +1,5 @@
 // Import modul express dan beberapa modul terkait lainnya
-import express, { urlencoded } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import expressLayouts from "express-ejs-layouts";
 import morgan from "morgan";
