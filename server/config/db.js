@@ -17,3 +17,4 @@ db.once("open", function () {
 });
 
 import "../models/categoryModel.js";
+import "../models/recipeModel.js";
