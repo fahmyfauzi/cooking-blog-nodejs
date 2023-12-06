@@ -5,6 +5,7 @@ import express from "express";
 import {
   homepageHandler,
   getAllCategoriesHandler,
+  getRecipeByIdHandler,
 } from "../controllers/recipeControoler.js";
 
 // Inisialisasi router menggunakan express.Router()
@@ -13,6 +14,6 @@ const router = express.Router();
 // Menangani HTTP GET request pada endpoint "/" dengan menggunakan homepageHandler
 router.get("/", homepageHandler);
 router.get("/categories", getAllCategoriesHandler);
-
+router.get("/recipe/:id", getRecipeByIdHandler);
 // Mengekspor router agar dapat digunakan di file lain
 export default router;

@@ -6,7 +6,26 @@ const homepageHandler = async (req, res) => {
   try {
     const limitNumber = 5;
     const categories = await Category.find({}).limit(limitNumber);
-    res.render("index", { title: "Cooking Blog - Home", categories });
+    const recipeLatest = await Recipe.find({})
+      .sort({ _id: -1 })
+      .limit(limitNumber);
+    const thai = await Recipe.find({ category: "Thai" })
+      .sort({ _id: -1 })
+      .limit(limitNumber);
+    const american = await Recipe.find({ category: "American" })
+      .sort({ _id: -1 })
+      .limit(limitNumber);
+    const chinese = await Recipe.find({ category: "Chinese" })
+      .sort({ _id: -1 })
+      .limit(limitNumber);
+
+    const food = { recipeLatest, thai, american, chinese };
+
+    res.render("index", {
+      title: "Cooking Blog - Home",
+      categories,
+      food,
+    });
   } catch (error) {
     res.status(500).send({ message: error.message || "Error Occured!" });
   }
@@ -25,6 +44,15 @@ const getAllCategoriesHandler = async (req, res) => {
   }
 };
 
+const getRecipeByIdHandler = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+    const recipe = await Recipe.findById(recipeId);
+    res.render("recipe", { title: "Cooking Blog - Recipe", recipe });
+  } catch (error) {
+    res.satus(500).send({ message: error.message || "Error Occured" });
+  }
+};
 async function insertDumyCategoryData() {
   try {
     await Category.insertMany([
@@ -341,4 +369,4 @@ async function insertDumyRecipeData() {
 // insertDumyCategoryData();
 // insertDumyRecipeData();
 
-export { homepageHandler, getAllCategoriesHandler };
+export { homepageHandler, getAllCategoriesHandler, getRecipeByIdHandler };
