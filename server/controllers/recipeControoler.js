@@ -87,6 +87,19 @@ const searchRecipeHandler = async (req, res) => {
   }
 };
 
+const getRecipeLatestHandler = async (req, res) => {
+  try {
+    const limitNumber = 20;
+    const recipe = await Recipe.find({}).sort({ _id: -1 }).limit(limitNumber);
+    res.render("explore-latest", {
+      title: "Cooking Blog - Explore Latest",
+      recipe,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Error Occured!" });
+  }
+};
+
 async function insertDumyCategoryData() {
   try {
     await Category.insertMany([
@@ -409,4 +422,5 @@ export {
   getRecipeByIdHandler,
   getCategoryByIdHandler,
   searchRecipeHandler,
+  getRecipeLatestHandler,
 };
