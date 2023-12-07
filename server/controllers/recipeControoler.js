@@ -100,6 +100,24 @@ const getRecipeLatestHandler = async (req, res) => {
   }
 };
 
+const getRecipeRandomHandler = async (req, res) => {
+  try {
+    // Menghitung total dokumen (jumlah resep) dalam koleksi Recipe
+    let count = await Recipe.find().countDocuments();
+
+    // Menghasilkan nomor acak antara 0 dan total jumlah resep
+    let random = Math.floor(Math.random() * count);
+
+    // Mengambil satu resep secara acak dengan melewati jumlah resep sebanyak nilai random
+    let recipe = await Recipe.findOne().skip(random).exec();
+    res.render("explore-random", {
+      title: "Cooking Blog- Explore Random",
+      recipe,
+    });
+  } catch (error) {
+    res.satus(500).send({ message: error.message || "Error Occured" });
+  }
+};
 async function insertDumyCategoryData() {
   try {
     await Category.insertMany([
@@ -423,4 +441,5 @@ export {
   getCategoryByIdHandler,
   searchRecipeHandler,
   getRecipeLatestHandler,
+  getRecipeRandomHandler,
 };
