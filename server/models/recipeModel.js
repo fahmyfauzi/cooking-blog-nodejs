@@ -28,4 +28,9 @@ const recipeSchema = new mongoose.Schema({
   },
 });
 
+// Membuat indeks teks pada kolom 'name' dan 'description' dalam skema Recipe
+recipeSchema.index({ name: "text", description: "text" });
+//Wildcard indexing
+// recipeSchema.index({$**:'text'})
+
 export default mongoose.model("Recipe", recipeSchema);

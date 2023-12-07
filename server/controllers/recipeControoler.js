@@ -71,6 +71,22 @@ const getCategoryByIdHandler = async (req, res) => {
   }
 };
 
+const searchRecipeHandler = async (req, res) => {
+  try {
+    const searchTerm = req.body.searchTerm;
+
+    // Mencari resep menggunakan model Recipe dengan kriteria pencarian teks
+    // $text:{$search:searchTerm} memungkinkan pencarian teks di koleksi MongoDB
+    // $diacriticSensitive:true memastikan pencarian peka terhadap diakritik (aksen huruf)
+    const search = await Recipe.find({
+      $text: { $search: searchTerm, $diacriticSensitive: true },
+    });
+    res.render("search", { title: "Cooking Blog - Search", search });
+  } catch (error) {
+    res.satus(500).send({ message: error.message || "Error Occured" });
+  }
+};
+
 async function insertDumyCategoryData() {
   try {
     await Category.insertMany([
@@ -392,4 +408,5 @@ export {
   getAllCategoriesHandler,
   getRecipeByIdHandler,
   getCategoryByIdHandler,
+  searchRecipeHandler,
 };
