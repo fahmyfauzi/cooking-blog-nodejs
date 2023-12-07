@@ -6,6 +6,7 @@ import {
   homepageHandler,
   getAllCategoriesHandler,
   getRecipeByIdHandler,
+  getCategoryByIdHandler,
 } from "../controllers/recipeControoler.js";
 
 // Inisialisasi router menggunakan express.Router()
@@ -15,5 +16,6 @@ const router = express.Router();
 router.get("/", homepageHandler);
 router.get("/categories", getAllCategoriesHandler);
 router.get("/recipe/:id", getRecipeByIdHandler);
+router.get("/categories/:id", getCategoryByIdHandler);
 // Mengekspor router agar dapat digunakan di file lain
 export default router;

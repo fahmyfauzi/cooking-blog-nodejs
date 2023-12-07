@@ -53,6 +53,24 @@ const getRecipeByIdHandler = async (req, res) => {
     res.satus(500).send({ message: error.message || "Error Occured" });
   }
 };
+
+const getCategoryByIdHandler = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const limitNumber = 20;
+    const categoriesById = await Recipe.find({ category: categoryId }).limit(
+      limitNumber
+    );
+
+    res.render("categories", {
+      title: "Cooking Blog - Categories",
+      categoriesById,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message || "Error Occured!" });
+  }
+};
+
 async function insertDumyCategoryData() {
   try {
     await Category.insertMany([
@@ -369,4 +387,9 @@ async function insertDumyRecipeData() {
 // insertDumyCategoryData();
 // insertDumyRecipeData();
 
-export { homepageHandler, getAllCategoriesHandler, getRecipeByIdHandler };
+export {
+  homepageHandler,
+  getAllCategoriesHandler,
+  getRecipeByIdHandler,
+  getCategoryByIdHandler,
+};
