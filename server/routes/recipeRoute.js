@@ -10,6 +10,8 @@ import {
   searchRecipeHandler,
   getRecipeLatestHandler,
   getRecipeRandomHandler,
+  submitRecipeHandler,
+  submitPostRecipeHandler,
 } from "../controllers/recipeControoler.js";
 
 // Inisialisasi router menggunakan express.Router()
@@ -23,5 +25,7 @@ router.get("/categories/:id", getCategoryByIdHandler);
 router.post("/search", searchRecipeHandler);
 router.get("/explore-latest", getRecipeLatestHandler);
 router.get("/random-recipe", getRecipeRandomHandler);
+router.get("/submit-recipe", submitRecipeHandler);
+router.post("/submit-recipe", submitPostRecipeHandler);
 // Mengekspor router agar dapat digunakan di file lain
 export default router;

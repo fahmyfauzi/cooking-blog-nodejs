@@ -1,6 +1,8 @@
+import path from "path";
 import "../config/db.js";
 import Category from "../models/categoryModel.js";
 import Recipe from "../models/recipeModel.js";
+import file from "path";
 
 const homepageHandler = async (req, res) => {
   try {
@@ -116,6 +118,53 @@ const getRecipeRandomHandler = async (req, res) => {
     });
   } catch (error) {
     res.satus(500).send({ message: error.message || "Error Occured" });
+  }
+};
+
+const submitRecipeHandler = async (req, res) => {
+  const inforErrorsObj = req.flash("inforErrors");
+  const infoSubmitObj = req.flash("infoSubmit");
+  res.render("submit-recipe", {
+    title: "Cooking Blog - Submi recipe",
+    inforErrorsObj,
+    infoSubmitObj,
+  });
+};
+
+const submitPostRecipeHandler = async (req, res) => {
+  try {
+    let imageUploadFile;
+    let uploadPath;
+    let newImageName;
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      console.log("No Files where uploaded.");
+    } else {
+      imageUploadFile = req.files.image;
+      newImageName = Date.now() + imageUploadFile.name;
+
+      uploadPath = path.resolve("./") + "/public/uploads/" + newImageName;
+
+      imageUploadFile.mv(uploadPath, function (err) {
+        if (err) return res.satus(500).send(err);
+      });
+    }
+
+    const newRecipe = new Recipe({
+      name: req.body.name,
+      description: req.body.description,
+      email: req.body.email,
+      ingredients: req.body.ingredients,
+      category: req.body.category,
+      image: newImageName,
+    });
+
+    await newRecipe.save();
+    req.flash("infoSubmit", "Recipe has been added!");
+    res.redirect("/submit-recipe");
+  } catch (error) {
+    req.flash("inforErrors", error.message);
+    res.redirect("/submit-recipe");
   }
 };
 async function insertDumyCategoryData() {
@@ -442,4 +491,6 @@ export {
   searchRecipeHandler,
   getRecipeLatestHandler,
   getRecipeRandomHandler,
+  submitRecipeHandler,
+  submitPostRecipeHandler,
 };
